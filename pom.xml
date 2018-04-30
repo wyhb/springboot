@@ -196,6 +196,20 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+    			<groupId>org.apache.maven.plugins</groupId>
+    			<artifactId>maven-compiler-plugin</artifactId>
+    			<version>3.7.0</version>
+    			<configuration>
+    				<fork>true</fork>
+    				<executable>C:\Program Files\Java\jdk1.8.0_161\bin\javac.exe</executable>
+        			<source>${java.version}</source>
+      				<target>${java.version}</target>
+      				<testSource>${java.version}</testSource>
+      				<testTarget>${java.version}</testTarget>
+      				<compilerArgument>-Xlint:unchecked</compilerArgument>
+    			</configuration>
+  			</plugin>
 		</plugins>
 	</build>
 
