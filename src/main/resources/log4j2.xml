@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration>
+<Configuration status="debug">
+	<properties>
+		<property name="APP_NAME">demo</property>
+		<property name="LOG_HOME">logs</property>
+		<property name="TIME_INTERVAL">1</property>
+		<property name="SIZE">100MB</property>
+		<property name="ROLLING_FILE_MAX">10</property>
+		<property name="PATTERN_LAYOUT">%date{yyyy/MM/dd HH:mm:ss.SSS} %-5level [%thread][%file:%line] - %msg%n</property>
+	</properties>
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+		</Console>
+
+		<RollingRandomAccessFile name="InfoFile"
+				fileName="${LOG_HOME}/info/${APP_NAME}-info.log"
+				filePattern="${LOG_HOME}/info/${APP_NAME}-info-%d{yyyy-MM-dd-HH}-%i.log">
+			<Filters>
+				<ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>
+				<ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" />
+			</Filters>
+			<PatternLayout pattern="${PATTERN_LAYOUT}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy  interval="${TIME_INTERVAL}" modulate="true" />
+				<SizeBasedTriggeringPolicy size="${SIZE}" />
+			</Policies>
+			<DefaultRolloverStrategy max="${ROLLING_FILE_MAX}" />
+		</RollingRandomAccessFile>
+		<RollingRandomAccessFile name="WarnFile"
+				fileName="${LOG_HOME}/warn/${APP_NAME}-warn.log"
+				filePattern="${LOG_HOME}/warn/${APP_NAME}-warn-%d{yyyy-MM-dd-HH}-%i.log">
+			<Filters>
+				<ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+				<ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+			</Filters>
+			<PatternLayout pattern="${PATTERN_LAYOUT}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy  interval="${TIME_INTERVAL}" modulate="true" />
+				<SizeBasedTriggeringPolicy size="${SIZE}" />
+			</Policies>
+			<DefaultRolloverStrategy max="${ROLLING_FILE_MAX}" />
+		</RollingRandomAccessFile>
+
+		<RollingRandomAccessFile name="ErrorFile"
+				fileName="${LOG_HOME}/error/${APP_NAME}-error.log"
+				filePattern="${LOG_HOME}/error/${APP_NAME}-error-%d{yyyy-MM-dd-HH}-%i.log">
+			<Filters>
+				<ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY" />
+			</Filters>
+			<PatternLayout pattern="${PATTERN_LAYOUT}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy  interval="${TIME_INTERVAL}" modulate="true" />
+				<SizeBasedTriggeringPolicy size="${SIZE}" />
+			</Policies>
+			<DefaultRolloverStrategy max="${ROLLING_FILE_MAX}" />
+		</RollingRandomAccessFile>
+	</Appenders>
+
+	<Loggers>
+		<logger name="com.github.wyhb.joe.demo" level="INFO"></logger>
+		<Root level="Debug">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="InfoFile" />
+			<AppenderRef ref="WarnFile" />
+			<AppenderRef ref="ErrorFile" />
+		</Root>
+	</Loggers>
+</Configuration>
